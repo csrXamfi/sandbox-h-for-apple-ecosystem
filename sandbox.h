@@ -31,6 +31,19 @@ enum sandbox_extension_flags {
     FS_EXT_PREFER_FILEID =  (1 << 4),
 };
 
+typedef struct sbParams sbParams_t;
+
+extern sbParams_t *sandbox_create_params(void);
+int    sandbox_set_param (sbParams_t    *params, char *param, char *value);
+
+
+typedef struct sbProfile {
+        char    *name;
+        void    *blob;
+        int32_t  len;
+
+} sbProfile_t;
+
 extern const char * APP_SANDBOX_IOKIT_CLIENT;
 extern const char * APP_SANDBOX_MACH;
 extern const char * APP_SANDBOX_READ;
@@ -55,7 +68,7 @@ extern const uint32_t SANDBOX_EXTENSION_PREFIXMATCH;
 extern const uint32_t SANDBOX_EXTENSION_UNRESOLVED;
 
 int sandbox_check(pid_t pid, const char *operation, enum sandbox_filter_type type, ...);
-int sandbox_container_path_for_pid(int pid, char *buffer, size_t buffer_size);
+int sandbox_container_path_for_pid (int Pid, char *Buf, int Len);
 int sandbox_check_by_audit_token(audit_token_t, const char *operation, enum sandbox_filter_type, ...);
 int sandbox_check_by_uniqueid(uid_t, pid_t, const char *operation, enum sandbox_filter_type, ...);
 int64_t sandbox_extension_consume(const char *extension_token);
@@ -78,4 +91,16 @@ void sandbox_extension_reap(void);
 int sandbox_extension_release(int64_t extension_handle);
 int sandbox_extension_release_file(int64_t extension_handle, const char *path);
 int sandbox_extension_update_file(int64_t extension_handle, const char *path);
+int sandbox_suspend(int Pid);
+int sandbox_unsuspend(int Pid);
+int __sandbox_ms(char *Label, int Op, void *ptr,...);
+sbProfile_t *sandbox_compile_file(char *filename, sbParams_t *params, char **err);
+sbProfile_t *sandbox_compile_string(char *profile_string, sbParams_t *params, char **err);
+sbProfile_t *sandbox_compile_entitlements(char *ents, sbParams_t *params, char **err);
+sbProfile_t *sandbox_compile_named(char *profile_name, sbParams_t *params, char **err);
+int sandbox_set_trace_path (sbProfile_t *, char *Path) __attribute__((weak_import));;
+int sandbox_vtrace_enable(void);
+char *sandbox_vtrace_report(void);
+void sandbox_free_profile(sbProfile_t *);
+int sandbox_apply_container(sbProfile_t *, uint32_t);
 #endif /* sandbox_h */
