@@ -1,9 +1,8 @@
 //
 //  sandbox.h
-//  1daysandbox
 //
-//  Created by mikhail on 27.11.2025.
 //
+
 
 #ifndef sandbox_h
 #define sandbox_h
@@ -22,7 +21,6 @@ enum sandbox_filter_type {
     SANDBOX_FILTER_XPC_SERVICE_NAME = 12,
     SANDBOX_FILTER_IOKIT_CONNECTION,
 };
-
 
 enum sandbox_extension_flags {
     FS_EXT_DEFAULTS =              0,
@@ -56,10 +54,10 @@ extern const uint32_t SANDBOX_EXTENSION_NO_STORAGE_CLASS;
 extern const uint32_t SANDBOX_EXTENSION_PREFIXMATCH;
 extern const uint32_t SANDBOX_EXTENSION_UNRESOLVED;
 
-int sandbox_check(pid_t, const char *operation, enum sandbox_filter_type, ...);
+int sandbox_check(pid_t pid, const char *operation, enum sandbox_filter_type type, ...);
+int sandbox_container_path_for_pid(int pid, char *buffer, size_t buffer_size);
 int sandbox_check_by_audit_token(audit_token_t, const char *operation, enum sandbox_filter_type, ...);
 int sandbox_check_by_uniqueid(uid_t, pid_t, const char *operation, enum sandbox_filter_type, ...);
-
 int64_t sandbox_extension_consume(const char *extension_token);
 char *sandbox_extension_issue_file(const char *extension_class, const char *path, uint32_t flags);
 char *sandbox_extension_issue_file_to_process(const char *extension_class, const char *path, uint32_t flags, audit_token_t);
