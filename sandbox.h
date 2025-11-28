@@ -83,7 +83,7 @@ char *operation_names[] = {
     "hid-control",
     "iokit*",
     "iokit-issue-extension",
-    "iokit-open",
+    "iokit-open-user-client",
     "iokit-set-properties",
     "iokit-get-properties",
     "ipc*",
